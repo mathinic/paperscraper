@@ -156,6 +156,13 @@ def save_pdf_from_dump(
         if "doi" not in paper.keys() or paper["doi"] is None:
             logger.warning(f"Skipping {paper['title']} since no DOI available.")
             continue
+            
+        raw_doi = paper["doi"]
+        single_doi = raw_doi.strip().split("\n")[0]
+        paper["doi"] = single_doi
+        if raw_doi != single_doi:
+            print(f"Multiple DOIs detected for this entry (with title '{paper["title"]}'). Use the first DOI ({single_doi}) to download PDF.")
+            
         filename = paper[key_to_save].replace("/", "_")
         save_pdf(
             paper,
